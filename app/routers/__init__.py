@@ -1,20 +1,17 @@
-import os 
 from fastapi import APIRouter
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from app.utilities.flash import get_flashed_messages
-
-main_router = APIRouter()
-static_files = StaticFiles(directory=os.path.join(os.path.dirname(__file__),"..", "static"))
-templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__),"..", "templates"))
-templates.env.globals['get_flashed_messages'] = get_flashed_messages
+from jinja2 import Environment, FileSystemLoader
+from app.config import get_settings
 
 
-from .auth import auth_router
-main_router.include_router(auth_router)
+template_env = Environment(loader = FileSystemLoader("app/templates",), )
+template_env.globals['get_flashed_messages'] = get_flashed_messages
+templates = Jinja2Templates(env=template_env)
+static_files = StaticFiles(directory="app/static")
 
-from .index import index_router
-main_router.include_router(index_router)
+router = APIRouter(tags=["Jinja Based Endpoints"], include_in_schema=get_settings().env.lower() in ["dev","development"])
+api_router = APIRouter(tags=["API Endpoints"], prefix="/api")
 
-from .app import app_router
-main_router.include_router(app_router)
+from . import (index, login, register, admin_home, user_home, users, logout)

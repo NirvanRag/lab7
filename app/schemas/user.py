@@ -7,7 +7,7 @@ from typing import Optional
 class UserUpdate(SQLModel):
     username: Optional[str]
     email: Optional[EmailStr]
-
+ 
 class AdminCreate(UserBase):
     role:str = "admin"
 
@@ -18,3 +18,8 @@ class UserResponse(SQLModel):
     id: int
     username:str
     email: EmailStr
+
+class SignupRequest(SQLModel):
+    username: str
+    email: EmailStr
+    password: str

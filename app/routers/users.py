@@ -1,0 +1,15 @@
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import Request, status, Form
+from app.dependencies import SessionDep
+from . import api_router
+from app.services.auth_service import AuthService
+from app.repositories.user import UserRepository
+from app.utilities.flash import flash
+from app.schemas import UserResponse
+
+
+# API endpoint for listing users
+@api_router.get("/users", response_model=list[UserResponse])
+async def list_users(request: Request, db: SessionDep):
+    user_repo = UserRepository(db)
+    return user_repo.get_all_users()

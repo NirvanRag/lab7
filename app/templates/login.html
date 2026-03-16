@@ -1,8 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Administravice Dashboard{% endblock %}
+{% block title %}Login{% endblock %}
+
+{% block external_js %}
+
+{% endblock %}
 
 
-{% block inline_styles %}
+{% block internal_css %}
 <style>
     body {
         background-color: #f8f9fa;
@@ -57,7 +61,7 @@
                 <div class="form-section">
                     <h3 class="fw-bold mb-4">Login</h3>
 
-                    <form method="POST">
+                    <form id="loginForm" method="POST">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control form-control-md" id="username" name="username"
@@ -79,7 +83,7 @@
                 </div>
 
                 <div class="d-grid mb-3">
-                    <a class="btn btn-secondary btn-lg" href="/signup" role="button">
+                    <a class="btn btn-secondary btn-lg" href="{{url_for('register_view')}}" role="button">
                         Sign Up
                     </a>
                 </div>

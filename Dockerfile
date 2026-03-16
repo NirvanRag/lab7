@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 RUN apt-get update \
     && apt-get install -y curl \
@@ -8,9 +8,10 @@ COPY ./pyproject.toml ./
 COPY ./README.md ./
 COPY ./app /app
 
-RUN pip install -e .
+RUN pip install .
 
 WORKDIR /app
 
-# TODO: i should probably optimize this for prod but rn it works for dev
-ENTRYPOINT ["fastapi", "dev"]
+ENTRYPOINT ["python"]
+
+CMD ["-m", "app.main"]
