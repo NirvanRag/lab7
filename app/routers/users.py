@@ -9,8 +9,14 @@ from app.schemas import UserResponse
 
 
 # API endpoint for listing users
-@api_router.get("/users", response_model=list[UserResponse])
-async def list_users(request: Request, db: SessionDep):
+@api_router.get("/todos")
+async def list_todos(request: Request, db: SessionDep):
     user_repo = UserRepository(db)
-    user_service = UserService(user_repo)
-    return user_service.get_all_users()
+    username = request.session.get("user", {}).get("username") if isinstance(request.session.get("user"), dict) else None
+    if not username:
+        username = request.session.get("username")
+    user_id = 1
+    if username:
+        user = user_repo.get_by_username(username)
+        if user:
+            user_id = user.id
